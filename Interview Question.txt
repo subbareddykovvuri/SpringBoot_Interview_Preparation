@@ -1,0 +1,141 @@
+********************************************************************************************************************************************************************************************
+Introduce yourself?
+
+Hi, I’m Subbareddy. I have around 3 years of experience working as a Backend Developer at Tata Consultancy Services.
+
+I primarily work with Java, Spring Boot, and Python, focusing on building REST APIs and automation solutions.
+
+In my first project, I developed backend APIs for a telecom site automation system, where field engineers submit tower data and stakeholders monitor and approve it. I worked on data validation, database integration, and also contributed to frontend components using React.js.
+
+One of my key contributions was in an automation project where I built a Python-based validation system. It processes Excel and XML inputs, performs system validations, and generates reports. This solution reduced manual effort from around 2 hours to just 5 minutes and also allowed parallel processing of multiple systems.
+
+Currently, I’m working on an e-commerce project using Liferay, where I develop backend features and handle partner integrations.
+
+I also have strong experience in debugging and root cause analysis, where I analyze logs and fix production issues to improve system stability.
+
+Additionally, I have completed the TCS Wings1 Spring Boot track with distinction and received a Star of the Month award.
+
+I’m now looking for opportunities where I can further grow as a backend developer and work on scalable, real-world systems.
+
+********************************************************************************************************************************************************************************************
+
+
+
+What is spring security?
+How to enable spring security in spring boot application?
+what is the default security setup adding a spring boot?
+How do you customize the user authentication in a spring security?
+what is the difference between authentication and authorization?
+How do you implement a role based access control in spring security?
+what is userDetailService?
+How do you store password securely in a spring security?
+What is purpose of security filter chain in spring security?
+How do you secure rest api's in spring security?
+What is JWT and why it is used in spring security?
+How do you implement JWT in spring security?
+what is csrf protection in spring security?
+How do you disable the csrf for REST api?
+How can you prevent the Brute Force attack in Spring Security?
+How do you handle method level security in spring security?
+
+
+
+
+
+
+
+What is spring security?
+
+Spring Security is a framework that handles Authentication and Authorization using a Filter Chain to protect your application from unauthorized access and common web vulnerabilities.
+Authentication : identifies the user
+Authorization: checks their privileges
+You can’t have authorization without authentication
+
+
+How to enable spring security in spring boot application?
+we need to add spring-boot-starter-security dependency in pom.xml file then the Spring boot automatically enables the security
+
+what is the default security setup adding a spring boot?
+By adding a spring security it secure the all http protocols, enables the basic authentication with login page and a default user and password printed in the console
+
+By default, every single URL in your application becomes protected. If you try to access any page or API endpoint, Spring Security will intercept the request and demand authentication.
+Spring Security provides a standard, built-in login page at /login. If you try to access a protected resource in a browser, you are automatically redirected there. It also handles the logout process at /logout.
+Since you haven't set up a database yet, Spring creates one temporary user for you:
+
+Username: user
+
+Password: A unique security password is generated randomly every time the application starts. You can find it in your system console/logs:
+
+Using generated security password: 5d4e-3a21-9b8c..
+
+
+How do you customize the user authentication in a spring security?
+This is the most common way to customize authentication. You create a service that loads user data from your database using a repository.
+Spring Security requires you to encode passwords. You must define a PasswordEncoder bean in your configuration class. BCrypt is the industry standard.
+When a user tries to log in, Spring Security performs these steps:
+It intercepts the login request.
+It calls your UserDetailsService to get the user's info from the DB.
+It uses the PasswordEncoder to check if the password the user typed matches the hashed password in the DB.
+If they match, the user is authenticated.
+
+what is the difference between authentication and authorization?
+Authentication : Is used to check whether the user who tries to login is a valid user
+Authorization : After the user login we check what are permissions available for the user to access
+
+How do you implement a role based access control in spring security?
+To implement RBAC, I follow this flow:
+Define Roles: Ensure user objects have GrantedAuthority assigned (e.g., ROLE_USER).
+Configuration: Use requestMatchers().hasRole() in the SecurityFilterChain for high-level URL protection.
+Annotations: Use @PreAuthorize on service methods for fine-grained control.
+Prefixing: Remember that Spring Security expects roles to be prefixed with ROLE_ internally when using the hasRole method.
+
+what is userDetailService?
+ReadOnly: The UserDetailsService is for retrieving data only. If you want to create or update users, you don't use this interface; you use your standard service/repository.
+The UserDetails Object: Mention that this interface returns a UserDetails object, which contains the username, password, and GrantedAuthorities (roles).
+AuthenticationProvider: Mention that the UserDetailsService is usually called by the DaoAuthenticationProvider during the login process.
+The UserDetailsService is a functional interface in Spring Security used to load user-specific data. It has a single method, loadUserByUsername, which acts as a bridge to fetch user credentials and roles from a data source like a database. It decouples the security framework from the underlying data storage logic.
+It is an interface that load the user details from the data source like database we implement it to provide a custom user authentication.
+
+
+How do you store password securely in a spring security?
+Spring Security uses the PasswordEncoder interface to handle password encryption and matching. Its two most important methods are:
+encode(rawPassword): Used when a user registers. It turns "12345" into a scrambled hash.
+matches(rawPassword, encodedPassword): Used during login. It compares the password the user typed with the hash stored in the database.
+The most common implementation is BCryptPasswordEncoder. It is secure because it includes a Salt (random data added to the password before hashing) and is slow by design, which protects against "brute force" attacks.
+You don't un-hash the password (hashing is one-way). Instead, Spring Security's AuthenticationProvider calls the matches() method:
+It retrieves the hash from the DB.
+It hashes the password the user just typed using the same salt.
+It checks if the two hashes are identical.
+In Spring Security, we store passwords securely by using the PasswordEncoder interface. We specifically use BCryptPasswordEncoder, which automatically handles salting and hashing. We ensure that plain-text passwords never touch the database; we hash them during registration and use the matches() method during authentication to verify the user's identity.
+
+What is purpose of security filter chain in spring security?
+The primary purpose of the Security Filter Chain is to intercept every incoming HTTP request and apply a series of security checks before the request ever reaches your Controller (API endpoint).
+The Security Filter Chain is a series of ordered filters that act as a gatekeeper for the application. Its purpose is to handle Authentication, Authorization, and Exploitation protection (like CSRF) in a centralized way. By the time a request reaches a Controller, we can be 100% certain that the user is who they say they are and has the permission to be there.
+
+How do you secure rest api's in spring security?
+To secure a REST API, I configure Spring Security to be stateless by setting the SessionCreationPolicy to STATELESS. I typically implement JWT (JSON Web Token) authentication, where a custom filter intercepts the request, validates the 'Bearer' token in the Authorization header, and populates the SecurityContext. I also disable CSRF protection since we aren't using cookies, and ensure strict CORS policies are in place.
+
+What is JWT and why it is used in spring security?
+JWT is a stateless authentication mechanism. We use it in Spring Security primarily for REST APIs to avoid storing session data on the server. Because the token is digitally signed, the server can trust the information inside it (like user roles) without hitting a database for every single request. This makes the application highly scalable and ideal for microservices
+
+How do you implement JWT in spring security?
+To implement JWT, I first disable session-based storage by setting the SessionCreationPolicy to STATELESS. I then create a JWT Utility class to manage token lifecycle and a Custom Filter that extends OncePerRequestFilter. This filter intercepts every request, validates the 'Bearer' token, and populates the SecurityContextHolder. Finally, I register this filter in the SecurityFilterChain before the standard authentication filters.
+
+what is csrf protection in spring security?
+CSRF(Cross-Site Request Forgery) protection in Spring Security prevents malicious sites from executing unauthorized actions on behalf of an authenticated user. It works by requiring a unique CSRF Token for every state-changing request. While it is enabled by default for session-based web apps, we typically disable it for stateless REST APIs that use JWT tokens, as those are not vulnerable to cookie-based forgery.
+
+How do you disable the csrf for REST api?
+To disable CSRF in Spring Security, I access the csrf() method on the HttpSecurity object and call .disable(). We do this for REST APIs because they are generally stateless. Since we use headers like 'Authorization' instead of cookies to pass tokens, the browser's automatic cookie-sending behavior—which CSRF exploits—is no longer a threat.
+
+How can you prevent the Brute Force attack in Spring Security?
+I prevent brute-force attacks in Spring Security by implementing an Account Lockout policy using Application Events to track failed attempts in the database. I also recommend Rate Limiting based on IP addresses using a custom Filter to prevent automated scripts from overwhelming the login endpoint. Finally, I ensure we use a high BCrypt work factor to make password cracking computationally expensive.
+
+How do you handle method level security in spring security?
+I handle method-level security by using the @EnableMethodSecurity annotation. I primarily use @PreAuthorize because it supports SpEL, allowing me to verify roles, permissions, or even check if a method argument matches the currently logged-in user. This provides a fine-grained layer of security that complements my URL-based security.
+
+
+
+
+
+
+
