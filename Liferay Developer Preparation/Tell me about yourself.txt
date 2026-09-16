@@ -1,0 +1,13 @@
+Sure. I am Manikanta Satya Subbareddy K, currently working as a System Engineer at Tata Consultancy Services, and I have more than three years of experience in Java full-stack development, with a strong focus on the Liferay platform.
+
+My primary experience is in backend development, especially developing modular Liferay features using OSGi, implementing custom business logic, and developing REST APIs using Java and Spring Boot.
+
+In my current project, I have also worked on integrating backend services with React.js applications for workflows such as status monitoring and digital approvals.
+
+Apart from application development, I have experience in production support and Root Cause Analysis, where I investigate application logs, database issues and API-level problems.
+
+One of the major automation initiatives I worked on was a Python-based Digital Gate or HOTO automation framework. It processes Excel and XML-based data and performs validation using parallel execution. This reduced the validation processing time from approximately two hours to five minutes, which is around a 95 percent reduction in processing time.
+
+I have also worked with MySQL, Git, GitHub, Jira, Postman and Agile/Scrum methodologies.
+
+Overall, I would describe myself as a backend-focused full-stack developer who enjoys solving complex problems, improving application performance and automating repetitive processes.
